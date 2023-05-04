@@ -1,0 +1,39 @@
+name: stocks
+services:
+  app:
+    type: php
+    via: nginx
+    ssl: true
+    xdebug: 'debug, develop'
+    webroot: ./www
+    composer_version: false
+    overrides:
+      environment:
+        PHP_IDE_CONFIG: "serverName=app"
+        XDEBUG_SESSION: "PHPSTORM"
+  database:
+    type: mariadb
+    creds:
+      user: stocks
+      password: pass
+      database: stocks
+  pma:
+    type: phpmyadmin
+    hosts:
+      - database
+  node:
+    type: node
+    ssl: true
+excludes:
+  - /vendor
+  - /node_modules
+tooling:
+  composer:
+    service: app
+  wp:
+    service: app
+    cmd: wp --path=www/wp
+  node:
+    service: node
+  npm:
+    service: node
